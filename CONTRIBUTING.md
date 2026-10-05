@@ -13,6 +13,10 @@
 
 ## Локальная проверка
 
+Если `.env` ещё нет, скопируйте `.env.example` в `.env` и замените заглушки
+секретного ключа Django и пароля PostgreSQL. Django загружает `.env`
+автоматически; переменные окружения имеют приоритет над файлом.
+
 ```bash
 python3.12 -m venv .venv
 source .venv/bin/activate
@@ -20,7 +24,7 @@ pip install -r requirements-dev.txt
 export DB_ENGINE=sqlite
 python manage.py migrate
 python manage.py check
-python manage.py test
+python -m pytest
 ruff check .
 ruff format --check .
 ```

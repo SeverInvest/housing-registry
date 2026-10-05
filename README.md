@@ -94,6 +94,11 @@ cp .env.example .env
 на два разных случайных значения. `.env` исключён из Git; публикуйте только
 `.env.example`. Django завершится с понятной ошибкой, если ключ не задан.
 
+Django автоматически загружает `.env` из корня проекта через `python-dotenv`.
+Переменные, уже заданные в окружении, имеют приоритет над значениями из файла.
+Это работает для команд `manage.py`, pytest, WSGI и ASGI; вручную выполнять
+`source .env` не требуется.
+
 ### Docker Compose
 
 Compose автоматически читает `.env`. Используется встроенное описание сборки
@@ -113,9 +118,6 @@ docker compose exec web python manage.py createsuperuser
 python3.12 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-set -a
-source .env
-set +a
 export DB_ENGINE=sqlite
 python manage.py migrate
 python manage.py createsuperuser
@@ -202,9 +204,6 @@ python manage.py sync_gis_houses \
 
 ```bash
 source .venv/bin/activate
-set -a
-source .env
-set +a
 python manage.py migrate
 python manage.py createsuperuser
 python manage.py collectstatic --noinput
@@ -216,12 +215,9 @@ python manage.py collectstatic --noinput
 
 ```bash
 pip install -r requirements-dev.txt
-set -a
-source .env
-set +a
 export DB_ENGINE=sqlite
 python manage.py check
-python manage.py test
+python -m pytest
 ruff check .
 ruff format --check .
 ```

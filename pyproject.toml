@@ -8,3 +8,7 @@ select = ["E", "F", "I", "UP"]
 
 [tool.ruff.format]
 quote-style = "double"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "housing_registry.settings"
+python_files = ["tests.py", "test_*.py", "*_tests.py"]
