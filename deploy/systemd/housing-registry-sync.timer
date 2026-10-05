@@ -1,0 +1,10 @@
+[Unit]
+Description=Run Housing Registry synchronization weekly
+
+[Timer]
+OnCalendar=Sun 02:00
+Persistent=true
+RandomizedDelaySec=900
+
+[Install]
+WantedBy=timers.target

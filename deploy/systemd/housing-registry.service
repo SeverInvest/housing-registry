@@ -1,0 +1,15 @@
+[Unit]
+Description=Housing Registry Django Admin
+After=network.target
+
+[Service]
+User=app
+Group=app
+WorkingDirectory=/opt/housing-registry
+EnvironmentFile=/opt/housing-registry/.env
+ExecStart=/opt/housing-registry/.venv/bin/gunicorn housing_registry.wsgi:application --bind 127.0.0.1:8000 --workers 3 --timeout 120
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

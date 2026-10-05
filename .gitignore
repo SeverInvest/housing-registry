@@ -1,0 +1,61 @@
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+.mypy_cache/
+.pytype/
+.pyre/
+
+# macOS
+.DS_Store
+
+# Local environment variables (keep the example)
+.env
+.env.*
+!.env.example
+
+# Local SQLite databases and journals
+*.sqlite
+*.sqlite3
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite3-journal
+*.sqlite3-wal
+*.sqlite3-shm
+
+# Logs
+*.log
+logs/
+
+# Test, lint, and coverage output
+.pytest_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+.tox/
+.nox/
+
+# Build and packaging output
+build/
+dist/
+*.egg-info/
+*.egg
+.eggs/
+
+# Django collectstatic and user uploads
+/staticfiles/
+/media/
+
+# Local IDE settings
+.vscode/
+.idea/
+*.iml

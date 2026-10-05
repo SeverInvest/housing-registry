@@ -1,0 +1,12 @@
+[Unit]
+Description=Housing Registry regional synchronization
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=app
+Group=app
+WorkingDirectory=/opt/housing-registry
+EnvironmentFile=/opt/housing-registry/.env
+ExecStart=/opt/housing-registry/.venv/bin/python manage.py sync_gis_houses --page-size 100 --authoritative
+ExecStart=/opt/housing-registry/.venv/bin/python manage.py sync_gis_details --mode pending --sleep 0.25
