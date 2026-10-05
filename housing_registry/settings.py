@@ -73,7 +73,7 @@ if os.getenv("DB_ENGINE", "postgresql") == "sqlite":
     }
 else:
     db_options = {}
-    if sslmode := os.getenv("PGSSLMODE"):
+    if sslmode := os.getenv("PGSSLMODE", "").strip():
         db_options["sslmode"] = sslmode
     if sslrootcert := os.getenv("PGSSLROOTCERT"):
         db_options["sslrootcert"] = sslrootcert
