@@ -87,7 +87,6 @@ class GISHousingClient:
         self.client.close()
 
     def _request(self, method: str, path: str, **kwargs: Any) -> dict[str, Any]:
-        last_error: Exception | None = None
         for attempt in range(self.max_retries + 1):
             try:
                 response = self.client.request(
@@ -105,12 +104,19 @@ class GISHousingClient:
                 if not isinstance(data, dict):
                     raise GISHousingAPIError("ГИС ЖКХ вернула JSON неожиданного типа")
                 return data
-            except (httpx.HTTPError, ValueError, GISHousingAPIError) as exc:
-                last_error = exc
+            except httpx.HTTPStatusError as exc:
+                if exc.response.status_code < 500 and exc.response.status_code != 429:
+                    raise GISHousingAPIError(
+                        f"ГИС ЖКХ отклонила запрос: HTTP {exc.response.status_code}"
+                    ) from None
                 if attempt >= self.max_retries:
                     break
                 time.sleep(min(2**attempt, 15))
-        raise GISHousingAPIError(str(last_error)) from last_error
+            except (httpx.HTTPError, ValueError, GISHousingAPIError):
+                if attempt >= self.max_retries:
+                    break
+                time.sleep(min(2**attempt, 15))
+        raise GISHousingAPIError("Не удалось получить корректный ответ ГИС ЖКХ") from None
 
     def search_houses(
         self, *, page_index: int, elements_per_page: int, payload: dict[str, Any]

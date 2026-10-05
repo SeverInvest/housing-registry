@@ -19,21 +19,23 @@
 
 ```bash
 python3.12 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements-dev.txt
-export DB_ENGINE=sqlite
-python manage.py migrate
-python manage.py check
-python -m pytest
-ruff check .
-ruff format --check .
+./.venv/bin/python -m pip install -r requirements-dev.txt
+./.venv/bin/python manage.py migrate
+./.venv/bin/python manage.py check
+./.venv/bin/python -m ruff check .
+./.venv/bin/python -m pytest
+./.venv/bin/python manage.py makemigrations --check --dry-run
 ```
+
+Проверки используют PostgreSQL из `.env`; тестовому пользователю нужно право
+создавать отдельную тестовую БД.
 
 ## Требования к изменениям
 
 - миграции добавляются вместе с изменениями моделей;
 - новая логика сопровождается тестами;
-- исходные ответы внешних систем сохраняются отдельно от нормализованных полей;
+- структура и границы MVP-1 определены в `docs/mvp-1-spec.md`;
+- исходные JSON в БД MVP-1 не сохраняются; тестовые ответы очищаются от секретов;
 - частичная региональная выборка не должна изменять данные других регионов;
 - изменения схемы или алгоритма импорта описываются в pull request.
 

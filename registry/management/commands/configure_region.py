@@ -13,8 +13,7 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument("--code", required=True, help="Код субъекта РФ, например 76")
         parser.add_argument("--name", required=True, help="Наименование субъекта РФ")
-        parser.add_argument("--fias-guid", required=True, help="GUID субъекта РФ по ФИАС")
-        parser.add_argument("--federal-district", default="", help="Федеральный округ")
+        parser.add_argument("--fias-guid", help="GUID субъекта РФ по ФИАС")
         parser.add_argument(
             "--disable",
             action="store_true",
@@ -26,7 +25,7 @@ class Command(BaseCommand):
         if not code.isdigit() or not 1 <= len(code) <= 3:
             raise CommandError("--code должен содержать от одной до трёх цифр")
         try:
-            fias_guid = uuid.UUID(options["fias_guid"])
+            fias_guid = uuid.UUID(options["fias_guid"]) if options["fias_guid"] else None
         except (ValueError, TypeError, AttributeError) as exc:
             raise CommandError("--fias-guid должен быть корректным UUID") from exc
 
@@ -35,7 +34,6 @@ class Command(BaseCommand):
             defaults={
                 "name": options["name"].strip(),
                 "fias_guid": fias_guid,
-                "federal_district": options["federal_district"].strip(),
                 "sync_enabled": not options["disable"],
             },
         )
